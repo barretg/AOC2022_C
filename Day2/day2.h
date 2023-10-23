@@ -11,9 +11,9 @@
  * Second index: tail (opponent)
  */
 const char rps_score[3][3] = {
-			//  ROCK	PAPER	SCISSORS
+			//   R	    P	S
 /* ROCK  	*/ 	{3,	  	0,	6 	}, 
-/* PAPER 	*/      {6,		3,	0	}, 
+/* PAPER 	*/  {6,		3,	0	}, 
 /* SCISSORS	*/	{0,		6,	3	},
 };
 
