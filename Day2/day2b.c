@@ -80,8 +80,8 @@ int get_next_score(FILE *fp, CharPair *pair) {
 	}
 
 	// Calculate the scores
-	// opponent_index + 1 mod 3 will give a loss
-	// opponent_index + 2 mod 3 will give a win
+	// opponent_index + 2 mod 3 will give a loss
+	// opponent_index + 1 mod 3 will give a win
 	// opponent_index will give a win 
 	switch (pair->tail) {
 		case 'X':
