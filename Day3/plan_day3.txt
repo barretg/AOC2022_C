@@ -1,0 +1,6 @@
+-> Read in L strings O(L)
+-> For each get length of string 
+-> Look for one character in both half strings O(n/2)
+-> Add sum of the character to sum
+
+Total time complexity O(L(n/2)) = O(Ln)
