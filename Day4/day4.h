@@ -21,13 +21,6 @@ typedef struct range {
 	unsigned int tail;
 } range;
 
-/**
- * Creation and destruction function
- * for range struct.
- */
-range* create_range(unsigned int head, unsigned int tail);
-void destroy_range(range* r);
-
 // FUNCTIONS:
 
 /**
@@ -54,13 +47,21 @@ int next_line(FILE *fp, char *buffer);
 void get_ranges(char *str, range* r1, range* r2);
 
 /**
- * Checks if in for next line's ranges
+ * Checks if for next line's ranges
  * one contains the other.
  *
  * True if it does.
- * False if it doesn't (or in case of 
- * error).
+ * False if it doesn't.
  */
 int does_next_contain(FILE *fp);
+
+/**
+ * Checks if the next line's ranges
+ * intersect with eachother at all.
+ *
+ * True if it does.
+ * False if they don't;
+ */
+int does_next_overlap(FILE *fp);
 
 #endif //DAY_4_H

@@ -12,7 +12,7 @@ int n_max_elves(FILE *fp, int** max_ptr, int n) {
 	int *max = *max_ptr;
 
 	for(i = 0; i < n; i++) {
-		max[i] = 0;									
+		max[i] = 0;
 	}
 		
 	while(fgets(buffer, BUFF_MAX, fp) != NULL) {

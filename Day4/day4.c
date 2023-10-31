@@ -16,21 +16,8 @@
 #define d_printf(fmt, ...) /* NO-OP */
 #endif
 
-range* create_range(unsigned int head, unsigned int tail) {
-	d_printf("Creating a new range...\n");
-	range * output;
-
-	output = (range*) calloc(1, sizeof(range));
-	output->head = head;
-	output->tail = tail;
-
-	return (range *) calloc(1, sizeof(range));
-}
-
-void destroy_range(range* r) {
-	d_printf("Destroying a range...");	
-	free(r);
-}
+// TODO FIGURE OUT WHY 4b ISN'T WORKING
+// TODO Refactor to remove all the times structs are passed as pointers
 
 int next_line(FILE *fp, char* buffer) {
 	d_printf("Time to get the next line...\n");
@@ -74,45 +61,72 @@ void get_ranges(char *str, range* r1, range* r2){
 	r2->tail = atoi(subtoken);
 }
 
+// 4a
 int does_next_contain(FILE *fp) {
 	char buffer[BUFF_MAX];
-	
-	d_printf("About to try range creation...\n");
-	range *r1 = create_range(0,0), *r2 = create_range(0,0);
-	d_printf("Ranges created!\n");
+	range r1 = {0, 0}, r2 = {0, 0};
 
 	if(next_line(fp, buffer) == EOF) {
 		return EOF;
 	}
 
 	d_printf("Time to get ranges...\n");
-	get_ranges(buffer, r1, r2);
+	get_ranges(buffer, &r1, &r2);
 
-	v_printf("r1:%d-%d, r2:%d-%d -> ", r1->head, r1->tail, r2->head, r2->tail);	
+	v_printf("r1:%d-%d, r2:%d-%d -> ", r1.head, r1.tail, r2.head, r2.tail);	
 
-	if(r1->head == r2->head || r1->tail == r2->tail) {
+	if(r1.head == r2.head || r1.tail == r2.tail) {
 		v_printf("one contains the other (equal case)\n");
 		return 1;
 	}
 		
-	if(r1->head < r2->head) {
-		if(r2->tail < r1->tail) {
-			destroy_range(r1);
-			destroy_range(r2);
+	if(r1.head < r2.head) {
+		if(r2.tail < r1.tail) {
 			v_printf("r1 contains r2\n");
 			return 1;
 		}
 	} else {
-		if(r1->tail < r2->tail) {
-			destroy_range(r1);
-			destroy_range(r2);
+		if(r1.tail < r2.tail) {
 			v_printf("r2 contains r1\n");
 			return 1;
 		}
 	}
 
-	destroy_range(r1);
-	destroy_range(r2);
+	v_printf("neither contains\n");
+	return 0;
+}
+
+// 4b
+int does_next_overlap(FILE *fp) {
+	char buffer[BUFF_MAX];
+	range r1 = {0, 0}, r2 = {0, 0};
+
+	if(next_line(fp, buffer) == EOF) {
+		return EOF;
+	}
+
+	d_printf("Time to get ranges...\n");
+	get_ranges(buffer, &r1, &r2);
+
+	v_printf("r1:%d-%d, r2:%d-%d -> ", r1->head, r1->tail, r2->head, r2->tail);	
+
+	if(r1.head == r2.head || r1.tail == r2.tail) {
+		v_printf("overlap\n");
+		return 1;
+	}
+		
+	if(r1.head < r2.head) {
+		if(r2.head <= r1.tail) {
+			v_printf("overlap\n");
+			return 1;
+		}
+	} else {
+		if(r1.head <= r2.tail) {
+			v_printf("overlap\n");
+			return 1;
+		}
+	}
+
 	v_printf("neither contains\n");
 	return 0;
 }
@@ -139,7 +153,15 @@ int main(int argc, char *argv[]) {
 		sum += ret;
 	}
 
-	printf("%d\n", sum);
+	printf("4a: Contains Count: %d\n", sum);
+
+	sum = 0;
+	while((ret = does_next_overlap(fp)) != EOF) {
+		d_printf("Current sum value: %d\n", sum);
+		sum += ret;
+	}
+
+	printf("4b: Overlaps Count: %d\n", sum);
 
 	// Make sure the file closes successfully
 	if(fclose(fp) != 0){

@@ -16,6 +16,8 @@
 #define d_printf(fmt, ...) /* NO-OP */
 #endif
 
+//TODO: YOU WERE IN THE PROGRESS OF REFACTORING TO ONE FILE CALLED day4.c INSTEAD OF 2 FILES
+
 range* create_range(unsigned int head, unsigned int tail) {
 	d_printf("Creating a new range...\n");
 	range * output;
@@ -24,7 +26,7 @@ range* create_range(unsigned int head, unsigned int tail) {
 	output->head = head;
 	output->tail = tail;
 
-	return (range *) calloc(1, sizeof(range));
+	return output; 
 }
 
 void destroy_range(range* r) {
@@ -75,7 +77,6 @@ void get_ranges(char *str, range* r1, range* r2){
 }
 
 
-// TODO: make a separate header and rename this does_next_overlap
 int does_next_contain(FILE *fp) {
 	char buffer[BUFF_MAX];
 	
